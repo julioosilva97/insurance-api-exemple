@@ -1,0 +1,83 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.3'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'jacoco'
+}
+
+group = 'com.julioosilva97'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+	testCompileOnly 'org.projectlombok:lombok:1.18.30'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.16.0'
+	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
+
+}
+
+task cleanJar(type: Delete) {
+	delete 'build/libs/*.jar'
+}
+
+build.dependsOn cleanJar
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'com.julioosilva97.insurancesapi.InsurancesApiApplication'
+		)
+	}
+}
+
+bootJar {
+	archiveFileName = "insurances-api.jar" // Define o nome do arquivo JAR resultante
+}
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacoco {
+	toolVersion = "0.8.11"
+
+
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+
+
+	// Configuração de exclusão
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: ['com/julioosilva97/insurancesapi/api/exceptionhandler/**',
+										'com/julioosilva97/insurancesapi/api/payload/**',
+										'com/julioosilva97/insurancesapi/infra/**',
+										'com/julioosilva97/insurancesapi/domain/model/**'])
+		})
+	}
+}
