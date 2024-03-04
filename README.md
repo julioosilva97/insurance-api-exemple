@@ -2,7 +2,7 @@
 
 Projeto Spring Boot para consulta de seguros.
 
-### Arquitetura (MVC)
+### Débito Técnico
 - Criar regras para cada seguro e salvar no banco de dados.
 
 ### Arquitetura (MVC)
