@@ -4,6 +4,7 @@ Projeto Spring Boot para consulta de seguros.
 
 ### Débito Técnico
 - Criar regras para cada seguro e salvar no banco de dados.
+- Adicionar swagger na api. 
 
 ### Arquitetura (MVC)
 ```tree
